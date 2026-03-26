@@ -1,17 +1,13 @@
 import mongoose from "mongoose";
 
 const courseSchema = new mongoose.Schema({
-  title: String,
+  title: {
+    type: String,
+    required: true
+  },
   description: String,
-  instructor: String,
   price: Number,
-  thumbnail: String,
-  lessons: [
-    {
-      title: String,
-      videoUrl: String
-    }
-  ]
-});
+  thumbnail: String
+}, { timestamps: true });
 
 export default mongoose.model("Course", courseSchema);

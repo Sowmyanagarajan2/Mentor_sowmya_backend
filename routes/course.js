@@ -3,23 +3,31 @@ import Course from "../models/Course.js";
 
 const router = express.Router();
 
-// Create course
-router.post("/", async (req, res) => {
+// GET all courses
+router.get("/", async (req, res) => {
   try {
-    const course = await Course.create(req.body);
-    res.json(course);
+    console.log("Fetching courses...");
+
+    const courses = await Course.find();
+
+    res.json(courses);
   } catch (err) {
-    res.status(500).json(err.message);
+    console.error("ERROR FETCHING COURSES:", err.message);
+    res.status(500).json({ error: err.message });
   }
 });
 
-// Get all courses
-router.get("/", async (req, res) => {
+// CREATE course
+router.post("/", async (req, res) => {
   try {
-    const courses = await Course.find();
-    res.json(courses);
+    console.log("Creating course:", req.body);
+
+    const course = await Course.create(req.body);
+
+    res.json(course);
   } catch (err) {
-    res.status(500).json(err.message);
+    console.error("ERROR CREATING COURSE:", err.message);
+    res.status(500).json({ error: err.message });
   }
 });
 

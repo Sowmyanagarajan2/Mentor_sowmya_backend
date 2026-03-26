@@ -20,6 +20,7 @@ router.post("/register", async (req, res) => {
 
     res.json(user);
   } catch (err) {
+    console.error(err.message);
     res.status(500).json(err.message);
   }
 });
@@ -42,8 +43,9 @@ router.post("/login", async (req, res) => {
 
     res.json({ token, user });
   } catch (err) {
+    console.error(err.message);
     res.status(500).json(err.message);
   }
 });
 
-export default router; // ✅ THIS LINE IS MUST
+export default router;
