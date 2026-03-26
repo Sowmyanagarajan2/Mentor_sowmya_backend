@@ -3,35 +3,41 @@ import Course from "../models/Course.js";
 
 const router = express.Router();
 
-// ✅ GET courses (SAFE VERSION)
+// ✅ GET courses
 router.get("/", async (req, res) => {
   try {
-    console.log("Fetching courses...");
-
     const courses = await Course.find();
-
     res.json(courses);
-  } catch (error) {
-    console.error("COURSE FETCH ERROR ❌:", error);
-    res.status(500).json({
-      message: "Error fetching courses",
-      error: error.message
-    });
+  } catch (err) {
+    console.error("GET ERROR:", err.message);
+    res.status(500).json({ error: err.message });
   }
 });
 
-// ✅ CREATE course
+// ✅ CREATE course (FIXED)
 router.post("/", async (req, res) => {
   try {
-    const course = await Course.create(req.body);
-    res.json(course);
-  } catch (error) {
-    console.error("COURSE CREATE ERROR ❌:", error);
-    res.status(500).json({
-      message: "Error creating course",
-      error: error.message
+    console.log("Incoming data:", req.body);
+
+    const { title, description, price } = req.body;
+
+    const course = await Course.create({
+      title,
+      description,
+      price
     });
+
+    res.json(course);
+  } catch (err) {
+    console.error("POST ERROR:", err.message);
+    res.status(500).json({ error: err.message });
   }
+});
+
+// 🧹 TEMP DELETE ALL (use once)
+router.delete("/all", async (req, res) => {
+  await Course.deleteMany({});
+  res.json({ message: "All courses deleted" });
 });
 
 export default router;
