@@ -3,7 +3,7 @@ import Course from "../models/Course.js";
 
 const router = express.Router();
 
-// GET all courses
+// ✅ GET courses (SAFE VERSION)
 router.get("/", async (req, res) => {
   try {
     console.log("Fetching courses...");
@@ -11,23 +11,26 @@ router.get("/", async (req, res) => {
     const courses = await Course.find();
 
     res.json(courses);
-  } catch (err) {
-    console.error("ERROR FETCHING COURSES:", err.message);
-    res.status(500).json({ error: err.message });
+  } catch (error) {
+    console.error("COURSE FETCH ERROR ❌:", error);
+    res.status(500).json({
+      message: "Error fetching courses",
+      error: error.message
+    });
   }
 });
 
-// CREATE course
+// ✅ CREATE course
 router.post("/", async (req, res) => {
   try {
-    console.log("Creating course:", req.body);
-
     const course = await Course.create(req.body);
-
     res.json(course);
-  } catch (err) {
-    console.error("ERROR CREATING COURSE:", err.message);
-    res.status(500).json({ error: err.message });
+  } catch (error) {
+    console.error("COURSE CREATE ERROR ❌:", error);
+    res.status(500).json({
+      message: "Error creating course",
+      error: error.message
+    });
   }
 });
 
